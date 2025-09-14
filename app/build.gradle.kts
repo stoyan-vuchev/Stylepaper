@@ -134,6 +134,7 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
+    implementation(libs.androidx.animation)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.tooling.preview)

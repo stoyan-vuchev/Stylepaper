@@ -1,6 +1,8 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.domain
 
+import android.os.Parcelable
 import androidx.compose.ui.graphics.Color
+import androidx.core.graphics.toColorInt
 import com.stoyanvuchev.stylepaper.core.ui.theme.Blue
 import com.stoyanvuchev.stylepaper.core.ui.theme.Brown
 import com.stoyanvuchev.stylepaper.core.ui.theme.Cyan
@@ -22,89 +24,96 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.Pink
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.PurpleColor
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.RedColor
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.YellowColor
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 sealed class WallpaperColor(
-    val uiColor: Color,
     val hexColor: String
-) {
+) : Parcelable {
 
-    object None : WallpaperColor(
-        uiColor = Color(0x00000000),
-        hexColor = ""
+    @Parcelize
+    data class None(val hex: String = "#999999") : Parcelable, WallpaperColor(
+        hexColor = "999999"
     )
 
     object PinkColor : WallpaperColor(
-        uiColor = Pink,
         hexColor = "ea4c88"
     )
 
     object PurpleColor : WallpaperColor(
-        uiColor = Purple,
         hexColor = "663399"
     )
 
     object BlueColor : WallpaperColor(
-        uiColor = Blue,
         hexColor = "0099CC"
     )
 
     object CyanColor : WallpaperColor(
-        uiColor = Cyan,
         hexColor = "66CCCC"
     )
 
     object GreenColor : WallpaperColor(
-        uiColor = Green,
         hexColor = "77CC33"
     )
 
     object YellowColor : WallpaperColor(
-        uiColor = Yellow,
         hexColor = "ffcc33"
     )
 
     object OrangeColor : WallpaperColor(
-        uiColor = Orange,
         hexColor = "ff9900"
     )
 
     object RedColor : WallpaperColor(
-        uiColor = Red,
         hexColor = "cc3333"
     )
 
     object BrownColor : WallpaperColor(
-        uiColor = Brown,
         hexColor = "996633"
     )
 
     object GreyColor : WallpaperColor(
-        uiColor = Grey,
         hexColor = "999999"
     )
 
 }
 
+fun WallpaperColor.toUIColor(): Color {
+    return when (this) {
+        is PinkColor -> Pink
+        is PurpleColor -> Purple
+        is BlueColor -> Blue
+        is CyanColor -> Cyan
+        is GreenColor -> Green
+        is YellowColor -> Yellow
+        is OrangeColor -> Orange
+        is RedColor -> Red
+        is BrownColor -> Brown
+        is GreyColor -> Grey
+        else -> Grey
+    }
+}
+
 fun String.toWallpaperColor(): WallpaperColor {
     return when (this) {
-        "ea4c88" -> PinkColor
-        "663399" -> PurpleColor
-        "0099CC" -> BlueColor
-        "66CCCC" -> CyanColor
-        "77CC33" -> GreenColor
-        "ffcc33" -> YellowColor
-        "ff9900" -> OrangeColor
-        "cc3333" -> RedColor
-        "996633" -> BrownColor
-        "999999" -> GreyColor
-        else -> None
+        "#ea4c88" -> PinkColor
+        "#663399" -> PurpleColor
+        "#0099cc" -> BlueColor
+        "#66cccc" -> CyanColor
+        "#77cc33" -> GreenColor
+        "#ffcc33" -> YellowColor
+        "#cc9900" -> OrangeColor
+        "#cc3333" -> RedColor
+        "#996633" -> BrownColor
+        "#999999" -> GreyColor
+        else -> None(this.toColorInt().toHexString())
     }
 }
 
 fun List<String>.toWallpaperColors(): List<WallpaperColor> = this.map { it.toWallpaperColor() }
 
 val colorsList = listOf(
-    None,
+    None(),
     PinkColor,
     PurpleColor,
     BlueColor,
