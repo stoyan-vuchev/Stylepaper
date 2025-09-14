@@ -6,8 +6,10 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.Wallpape
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpapersSearchListingEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.remote.response.WallpaperResponse
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.remote.response.WallpapersListingResponse
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersCategory
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersHomeSelection
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.toWallpaperColor
 import kotlin.collections.distinct
 
 fun WallpapersListingResponse.toHomeEntity(
@@ -27,7 +29,7 @@ fun WallpapersListingResponse.toHomeEntity(
 fun WallpapersListingResponse.toDiscoverEntity(
     fetched: Long,
     category: WallpapersCategory,
-    color: String
+    color: WallpaperColor
 ) = WallpapersDiscoverListingEntity(
     fetched = fetched,
     category = category,
@@ -44,7 +46,7 @@ fun WallpapersListingResponse.toSearchEntity(
     fetched: Long,
     searchQuery: String,
     category: WallpapersCategory,
-    color: String
+    color: WallpaperColor
 ) = WallpapersSearchListingEntity(
     fetched = fetched,
     searchQuery = searchQuery,

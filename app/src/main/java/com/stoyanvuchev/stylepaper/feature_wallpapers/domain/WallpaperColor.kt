@@ -11,18 +11,22 @@ import com.stoyanvuchev.stylepaper.core.ui.theme.Pink
 import com.stoyanvuchev.stylepaper.core.ui.theme.Purple
 import com.stoyanvuchev.stylepaper.core.ui.theme.Red
 import com.stoyanvuchev.stylepaper.core.ui.theme.Yellow
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.BlueColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.BrownColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.CyanColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.GreenColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.GreyColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.None
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.OrangeColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.PinkColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.PurpleColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.RedColor
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor.YellowColor
 
 sealed class WallpaperColor(
     val uiColor: Color,
     val hexColor: String
 ) {
-
-    companion object Companion {
-        val colorsList = listOf(
-            None, PinkColor, PurpleColor, BlueColor, CyanColor, GreenColor,
-            YellowColor, OrangeColor, RedColor, BrownColor, GreyColor
-        )
-    }
 
     object None : WallpaperColor(
         uiColor = Color(0x00000000),
@@ -80,3 +84,35 @@ sealed class WallpaperColor(
     )
 
 }
+
+fun String.toWallpaperColor(): WallpaperColor {
+    return when (this) {
+        "ea4c88" -> PinkColor
+        "663399" -> PurpleColor
+        "0099CC" -> BlueColor
+        "66CCCC" -> CyanColor
+        "77CC33" -> GreenColor
+        "ffcc33" -> YellowColor
+        "ff9900" -> OrangeColor
+        "cc3333" -> RedColor
+        "996633" -> BrownColor
+        "999999" -> GreyColor
+        else -> None
+    }
+}
+
+fun List<String>.toWallpaperColors(): List<WallpaperColor> = this.map { it.toWallpaperColor() }
+
+val colorsList = listOf(
+    None,
+    PinkColor,
+    PurpleColor,
+    BlueColor,
+    CyanColor,
+    GreenColor,
+    YellowColor,
+    OrangeColor,
+    RedColor,
+    BrownColor,
+    GreyColor
+)
