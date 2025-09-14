@@ -9,6 +9,7 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.data.remote.response.Wallp
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.remote.response.WallpaperResponseUploader
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.remote.response.WallpaperResponseUploaderAvatar
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.remote.response.WallpapersListingResponseItem
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersCategory
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersHomeSelection
 
@@ -163,6 +164,22 @@ class WallpapersLocalDatabaseTypeConverters {
         value: UIString?
     ): String? {
         val type = object : TypeToken<UIString>() {}.type
+        return Gson().toJson(value, type)
+    }
+
+    @TypeConverter
+    fun fromJsonToWallpaperColor(
+        value: String?
+    ): WallpaperColor? {
+        val type = object : TypeToken<WallpaperColor>() {}.type
+        return Gson().fromJson(value, type)
+    }
+
+    @TypeConverter
+    fun fromWallpaperColorToJson(
+        value: WallpaperColor?
+    ): String? {
+        val type = object : TypeToken<WallpaperColor>() {}.type
         return Gson().toJson(value, type)
     }
 

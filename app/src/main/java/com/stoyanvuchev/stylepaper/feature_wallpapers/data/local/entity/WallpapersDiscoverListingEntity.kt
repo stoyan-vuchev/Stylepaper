@@ -3,6 +3,7 @@ package com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.remote.response.WallpapersListingResponseItem
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersCategory
 
 @Entity(
@@ -13,7 +14,7 @@ data class WallpapersDiscoverListingEntity(
 
     val fetched: Long,
     val category: WallpapersCategory,
-    val color: String,
+    val color: WallpaperColor,
     val wallpapers: List<WallpapersListingResponseItem>,
 
     @ColumnInfo(name = "current_page")

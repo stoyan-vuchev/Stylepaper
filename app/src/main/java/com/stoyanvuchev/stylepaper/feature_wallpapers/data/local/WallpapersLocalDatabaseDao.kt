@@ -8,6 +8,7 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.Wallpape
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpapersDiscoverListingEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpapersHomeListingEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpapersSearchListingEntity
+import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersCategory
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersHomeSelection
 
@@ -62,7 +63,7 @@ interface WallpapersLocalDatabaseDao {
     )
     suspend fun getDiscoverWallpapersListing(
         category: WallpapersCategory,
-        color: String,
+        color: WallpaperColor,
         page: Int
     ): WallpapersDiscoverListingEntity?
 
@@ -74,7 +75,7 @@ interface WallpapersLocalDatabaseDao {
     )
     suspend fun deleteDiscoverWallpapersListing(
         category: WallpapersCategory,
-        color: String,
+        color: WallpaperColor,
         page: Int
     )
 
@@ -98,7 +99,7 @@ interface WallpapersLocalDatabaseDao {
     suspend fun getSearchWallpapersListing(
         searchQuery: String,
         category: WallpapersCategory,
-        color: String,
+        color: WallpaperColor,
         page: Int
     ): WallpapersSearchListingEntity?
 
@@ -112,7 +113,7 @@ interface WallpapersLocalDatabaseDao {
     suspend fun deleteSearchWallpapersListing(
         searchQuery: String,
         category: WallpapersCategory,
-        color: String,
+        color: WallpaperColor,
         page: Int
     )
 
