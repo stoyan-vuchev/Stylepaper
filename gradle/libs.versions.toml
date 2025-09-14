@@ -50,6 +50,7 @@ okhttp3Version = "5.1.0"
 # Other Dependency Versions
 systemUIBarsTweakerVersion = "1.2.4"
 squircleShapeVersion = "4.0.0"
+animationVersion = "1.9.1"
 
 # ================================================================================================
 
@@ -123,6 +124,7 @@ okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-i
 # Other Dependencies
 systemUIBarsTweaker = { group = "com.github.stoyan-vuchev", name = "system-ui-bars-tweaker", version.ref = "systemUIBarsTweakerVersion" }
 squircleShape = { group = "com.stoyanvuchev", name = "squircle-shape-android", version.ref = "squircleShapeVersion" }
+androidx-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "animationVersion" }
 
 # ================================================================================================
 

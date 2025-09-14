@@ -1,7 +1,10 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.domain.model
 
+import android.os.Parcelable
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class WallpapersListingItemModel(
     val id: String = "",
     val category: String = "",
@@ -21,4 +24,4 @@ data class WallpapersListingItemModel(
     val thumbnails: WallpaperThumbnailsModel = WallpaperThumbnailsModel(),
     val url: String = "",
     val views: Long = 0L
-)
+) : Parcelable

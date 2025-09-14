@@ -1,5 +1,9 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class WallpapersListingModel(
     val fetched: String = "",
     var wallpapers: MutableList<WallpapersListingItemModel> = mutableListOf(),
@@ -8,4 +12,4 @@ data class WallpapersListingModel(
     val perPage: String = "",
     val seed: String = "",
     val total: Int = 0
-)
+) : Parcelable
