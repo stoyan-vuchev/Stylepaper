@@ -104,7 +104,7 @@ class WallpaperDetailsScreenViewModel @Inject constructor(
             is Fullscreen -> sendActionEvent(action)
             is ScrollToTop -> sendActionEvent(action)
             is Download -> sendActionEvent(action)
-            is Apply -> showSnackbar(UIString.Resource(R.string.not_implemented))
+            is Apply -> sendActionEvent(action)
             is Save -> showSnackbar(UIString.Resource(R.string.not_implemented))
         }
     }

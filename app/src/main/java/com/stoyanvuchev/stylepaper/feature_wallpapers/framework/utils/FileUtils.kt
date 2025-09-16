@@ -9,7 +9,17 @@ fun isWallpaperDownloaded(
     context: Context,
     id: String,
     fileType: String
-): Boolean {
+): Boolean = getWallpaperFile(
+    context = context,
+    id = id,
+    fileType = fileType
+).exists()
+
+fun getWallpaperFile(
+    context: Context,
+    id: String,
+    fileType: String
+): File {
 
     val fileName = getFileName(id, fileType)
     val dir = File(
@@ -17,8 +27,6 @@ fun isWallpaperDownloaded(
         "Stylepaper"
     )
 
-    val file = File(dir, fileName)
+    return File(dir, fileName)
 
-    println("AJA: type: $fileType, Name: $fileName, Path: ${file.absolutePath}")
-    return file.exists()
 }

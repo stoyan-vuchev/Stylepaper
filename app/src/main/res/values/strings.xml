@@ -42,4 +42,5 @@
     <string name="apply_wallpaper_home_and_lock_screen"><![CDATA[Home & Lock Screen]]></string>
     <string name="something_went_wrong">Something went wrong.</string>
     <string name="not_implemented">Not implemented.</string>
+    <string name="set_as">Set as:</string>
 </resources>
