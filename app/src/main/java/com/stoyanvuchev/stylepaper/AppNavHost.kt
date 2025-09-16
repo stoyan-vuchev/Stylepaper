@@ -3,8 +3,10 @@ package com.stoyanvuchev.stylepaper
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.stoyanvuchev.stylepaper.core.ui.navhost.NavHostTransitions
@@ -16,13 +18,7 @@ fun AppNavHost(
     navController: NavHostController
 ) {
 
-    val defaultEnterTransition by lazy {
-        NavHostTransitions.Enter.scaleAndFadeInWithOvershoot()
-    }
-
-    val defaultExitTransition by lazy {
-        NavHostTransitions.Exit.scaleAndFadeOutWithOvershoot()
-    }
+    val layoutDirection = LocalLayoutDirection.current
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -30,12 +26,17 @@ fun AppNavHost(
             modifier = Modifier.fillMaxSize(),
             navController = navController,
             startDestination = Screen.WallpapersNavigation,
-            enterTransition = { defaultEnterTransition },
-            exitTransition = { defaultExitTransition }
+            enterTransition = remember {
+                { NavHostTransitions.Enter.scaleAndFadeInWithOvershoot() }
+            },
+            exitTransition = remember {
+                { NavHostTransitions.Exit.scaleAndFadeOutWithOvershoot() }
+            }
         ) {
 
             wallpapersNavGraph(
-                navController = navController
+                navController = navController,
+                layoutDirection = layoutDirection
             )
 
         }

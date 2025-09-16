@@ -7,22 +7,19 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.toRoute
 import com.stoyanvuchev.stylepaper.core.ui.navhost.safeScreen
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.home.components.WallpapersHomeScreen
+import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.ui_components.WallpaperDetailsScreen
 
 fun NavGraphBuilder.wallpapersNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    layoutDirection: LayoutDirection
 ) {
-
-    val homeScreenTransitions by lazy { WallpapersNavGraphTransitions.Home }
-    val discoverScreenTransitions by lazy { WallpapersNavGraphTransitions.Discover }
-    val menuScreenTransitions by lazy { WallpapersNavGraphTransitions.Menu }
-    val wallpaperDetailsTransitions by lazy { WallpapersNavGraphTransitions.WallpaperDetails }
 
     navigation<Screen.WallpapersNavigation>(
         startDestination = Screen.Home
@@ -30,17 +27,19 @@ fun NavGraphBuilder.wallpapersNavGraph(
 
         composable<Screen.Home>(
             enterTransition = {
-                homeScreenTransitions.enterTransition(
+                WallpapersNavGraphTransitions.Home.enterTransition(
                     scope = this,
                     initialRoute = initialState.safeScreen(),
-                    targetRoute = targetState.safeScreen()
+                    targetRoute = targetState.safeScreen(),
+                    layoutDirection = layoutDirection
                 )
             },
             exitTransition = {
-                homeScreenTransitions.exitTransition(
+                WallpapersNavGraphTransitions.Home.exitTransition(
                     scope = this,
                     initialRoute = initialState.safeScreen(),
-                    targetRoute = targetState.safeScreen()
+                    targetRoute = targetState.safeScreen(),
+                    layoutDirection = layoutDirection
                 )
             }
         ) {
@@ -53,15 +52,17 @@ fun NavGraphBuilder.wallpapersNavGraph(
 
         composable<Screen.Discover>(
             enterTransition = {
-                discoverScreenTransitions.enterTransition(
+                WallpapersNavGraphTransitions.Discover.enterTransition(
                     scope = this,
-                    initialRoute = initialState.safeScreen()
+                    initialRoute = initialState.safeScreen(),
+                    layoutDirection
                 )
             },
             exitTransition = {
-                discoverScreenTransitions.exitTransition(
+                WallpapersNavGraphTransitions.Discover.exitTransition(
                     scope = this,
-                    targetRoute = targetState.safeScreen()
+                    targetRoute = targetState.safeScreen(),
+                    layoutDirection
                 )
             }
         ) {
@@ -100,10 +101,16 @@ fun NavGraphBuilder.wallpapersNavGraph(
 
         composable<Screen.Menu>(
             enterTransition = {
-                menuScreenTransitions.enterTransition(scope = this)
+                WallpapersNavGraphTransitions.Menu.enterTransition(
+                    scope = this,
+                    layoutDirection = layoutDirection
+                )
             },
             exitTransition = {
-                menuScreenTransitions.exitTransition(scope = this)
+                WallpapersNavGraphTransitions.Menu.exitTransition(
+                    scope = this,
+                    layoutDirection = layoutDirection
+                )
             }
         ) {
 
@@ -124,18 +131,20 @@ fun NavGraphBuilder.wallpapersNavGraph(
 
         composable<Screen.WallpaperDetails>(
             enterTransition = {
-                wallpaperDetailsTransitions.enterTransition(
-                    initialRoute = initialState.toRoute<Screen>()
+                WallpapersNavGraphTransitions.WallpaperDetails.enterTransition(
+                    initialRoute = initialState.safeScreen()
                 )
             },
             exitTransition = {
-                wallpaperDetailsTransitions.exitTransition(
-                    targetState = targetState.toRoute<Screen>()
+                WallpapersNavGraphTransitions.WallpaperDetails.exitTransition(
+                    targetState = targetState.safeScreen()
                 )
             }
         ) {
 
-            // todo
+            WallpaperDetailsScreen(
+                navController = navController
+            )
 
         }
 

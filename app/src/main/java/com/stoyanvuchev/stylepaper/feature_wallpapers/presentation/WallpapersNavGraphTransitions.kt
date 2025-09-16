@@ -3,6 +3,7 @@ package com.stoyanvuchev.stylepaper.feature_wallpapers.presentation
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavBackStackEntry
 import com.stoyanvuchev.stylepaper.core.ui.navhost.NavHostTransitions
 
@@ -13,27 +14,20 @@ sealed interface WallpapersNavGraphTransitions {
         fun enterTransition(
             scope: AnimatedContentTransitionScope<NavBackStackEntry>,
             initialRoute: Screen?,
-            targetRoute: Screen?
+            targetRoute: Screen?,
+            layoutDirection: LayoutDirection
         ) = when {
 
-            targetRoute is Screen.Discover
-                    || initialRoute is Screen.Discover
-                    && targetRoute is Screen.Home -> {
-
-                NavHostTransitions.Enter.slideInRightIntoContainerAndFadeIn(
-                    scope = scope,
-                    towards = AnimatedContentTransitionScope.SlideDirection.Right
-                )
-
-            }
-
-            targetRoute is Screen.Menu
+            initialRoute is Screen.Discover
+                    && targetRoute is Screen.Home
                     || initialRoute is Screen.Menu
                     && targetRoute is Screen.Home -> {
 
                 NavHostTransitions.Enter.slideInRightIntoContainerAndFadeIn(
                     scope = scope,
-                    towards = AnimatedContentTransitionScope.SlideDirection.Right
+                    towards = if (layoutDirection == LayoutDirection.Ltr) {
+                        AnimatedContentTransitionScope.SlideDirection.Right
+                    } else AnimatedContentTransitionScope.SlideDirection.Left
                 )
 
             }
@@ -45,29 +39,20 @@ sealed interface WallpapersNavGraphTransitions {
         fun exitTransition(
             scope: AnimatedContentTransitionScope<NavBackStackEntry>,
             initialRoute: Screen?,
-            targetRoute: Screen?
+            targetRoute: Screen?,
+            layoutDirection: LayoutDirection
         ) = when {
 
             initialRoute is Screen.Home
                     && targetRoute is Screen.Discover
-                    || initialRoute is Screen.Discover
-                    && targetRoute is Screen.Home -> {
+                    || initialRoute is Screen.Home
+                    && targetRoute is Screen.Menu -> {
 
                 NavHostTransitions.Exit.slideOutOfContainerAndFadeOut(
                     scope = scope,
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left
-                )
-
-            }
-
-            initialRoute is Screen.Home
-                    && targetRoute is Screen.Menu
-                    || initialRoute is Screen.Menu
-                    && targetRoute is Screen.Home -> {
-
-                NavHostTransitions.Exit.slideOutOfContainerAndFadeOut(
-                    scope = scope,
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left
+                    towards = if (layoutDirection == LayoutDirection.Ltr) {
+                        AnimatedContentTransitionScope.SlideDirection.Left
+                    } else AnimatedContentTransitionScope.SlideDirection.Right
                 )
 
             }
@@ -82,19 +67,24 @@ sealed interface WallpapersNavGraphTransitions {
 
         fun enterTransition(
             scope: AnimatedContentTransitionScope<NavBackStackEntry>,
-            initialRoute: Screen?
+            initialRoute: Screen?,
+            layoutDirection: LayoutDirection
         ) = when (initialRoute) {
 
             is Screen.Home -> NavHostTransitions.Enter
                 .slideInRightIntoContainerAndFadeIn(
                     scope = scope,
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left
+                    towards = if (layoutDirection == LayoutDirection.Ltr) {
+                        AnimatedContentTransitionScope.SlideDirection.Left
+                    } else AnimatedContentTransitionScope.SlideDirection.Right
                 )
 
             is Screen.Menu -> NavHostTransitions.Enter
                 .slideInRightIntoContainerAndFadeIn(
                     scope = scope,
-                    towards = AnimatedContentTransitionScope.SlideDirection.Right
+                    towards = if (layoutDirection == LayoutDirection.Ltr) {
+                        AnimatedContentTransitionScope.SlideDirection.Right
+                    } else AnimatedContentTransitionScope.SlideDirection.Left
                 )
 
             else -> NavHostTransitions.Enter.scaleAndFadeInWithOvershoot(initialScale = 1.1f)
@@ -103,7 +93,8 @@ sealed interface WallpapersNavGraphTransitions {
 
         fun exitTransition(
             scope: AnimatedContentTransitionScope<NavBackStackEntry>,
-            targetRoute: Screen?
+            targetRoute: Screen?,
+            layoutDirection: LayoutDirection
         ) = when (targetRoute) {
 
             is Screen.Home -> NavHostTransitions.Exit
@@ -127,17 +118,23 @@ sealed interface WallpapersNavGraphTransitions {
     data object Menu : WallpapersNavGraphTransitions {
 
         fun enterTransition(
-            scope: AnimatedContentTransitionScope<NavBackStackEntry>
+            scope: AnimatedContentTransitionScope<NavBackStackEntry>,
+            layoutDirection: LayoutDirection
         ) = NavHostTransitions.Enter.slideInRightIntoContainerAndFadeIn(
             scope = scope,
-            towards = AnimatedContentTransitionScope.SlideDirection.Left
+            towards = if (layoutDirection == LayoutDirection.Ltr) {
+                AnimatedContentTransitionScope.SlideDirection.Left
+            } else AnimatedContentTransitionScope.SlideDirection.Right
         )
 
         fun exitTransition(
-            scope: AnimatedContentTransitionScope<NavBackStackEntry>
+            scope: AnimatedContentTransitionScope<NavBackStackEntry>,
+            layoutDirection: LayoutDirection
         ) = NavHostTransitions.Exit.slideOutOfContainerAndFadeOut(
             scope = scope,
-            towards = AnimatedContentTransitionScope.SlideDirection.Right
+            towards = if (layoutDirection == LayoutDirection.Ltr) {
+                AnimatedContentTransitionScope.SlideDirection.Right
+            } else AnimatedContentTransitionScope.SlideDirection.Left
         )
 
     }
