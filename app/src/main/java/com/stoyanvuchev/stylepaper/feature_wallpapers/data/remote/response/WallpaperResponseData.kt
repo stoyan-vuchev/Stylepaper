@@ -71,6 +71,6 @@ data class WallpaperResponseData(
     val url: String,
 
     @SerializedName("views")
-    val views: Long
+    val views: Int
 
 )

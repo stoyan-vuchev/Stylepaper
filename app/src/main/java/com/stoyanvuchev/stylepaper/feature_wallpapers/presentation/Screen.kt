@@ -1,19 +1,22 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.presentation
 
+import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import com.stoyanvuchev.stylepaper.R
 import com.stoyanvuchev.stylepaper.core.ui.navhost.NavScreen
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Immutable
+@Parcelize
 @Serializable
 sealed class Screen(
     @param:DrawableRes val icon: Int,
     @param:StringRes val label: Int,
     @param:StringRes val description: Int
-) : NavScreen() {
+) : Parcelable, NavScreen() {
 
     @Serializable
     data object WallpapersNavigation : Screen(

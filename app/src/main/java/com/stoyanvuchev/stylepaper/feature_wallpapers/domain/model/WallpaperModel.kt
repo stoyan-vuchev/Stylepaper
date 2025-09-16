@@ -1,8 +1,10 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.domain.model
 
 import android.os.Parcelable
+import androidx.compose.runtime.Stable
 import kotlinx.parcelize.Parcelize
 
+@Stable
 @Parcelize
 data class WallpaperModel(
     val id: String = "",
@@ -26,5 +28,5 @@ data class WallpaperModel(
     val thumbs: WallpaperThumbnailsModel = WallpaperThumbnailsModel(),
     val uploader: WallpaperUploaderModel = WallpaperUploaderModel(),
     val url: String = "",
-    val views: Long = 0L
+    val views: Int = 0
 ) : Parcelable

@@ -1,5 +1,8 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.mappers
 
+import com.stoyanvuchev.stylepaper.core.utils.DataUtils.toHumanReadableByteCountBin
+import com.stoyanvuchev.stylepaper.core.utils.MimeTypeUtils.toReadableMimeType
+import com.stoyanvuchev.stylepaper.core.utils.ProportionsUtils
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpaperEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpapersDiscoverListingEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpapersHomeListingEntity
@@ -46,9 +49,11 @@ fun WallpaperEntity.toModel() = WallpaperModel(
     dimensionX = dimensionX,
     dimensionY = dimensionY,
     favorites = favorites,
-    fileSize = fileSize.toString(),
-    fileType = fileType,
-    aspectRatio = "",
+    fileSize = fileSize.toHumanReadableByteCountBin(),
+    fileType = fileType.toReadableMimeType(),
+    aspectRatio = if (dimensionX > 0 && dimensionY > 0) {
+        ProportionsUtils.calculateAspectRatio(dimensionX, dimensionY)
+    } else "",
     path = path,
     purity = purity,
     ratio = ratio,

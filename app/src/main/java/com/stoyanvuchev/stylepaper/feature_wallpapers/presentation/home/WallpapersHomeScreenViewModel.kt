@@ -67,12 +67,11 @@ class WallpapersHomeScreenViewModel @Inject constructor(
             is LoadNextItems -> loadNextPaginatorItems()
             is Selection -> handleSelectionChange(action.selection)
             is ViewWallpaper -> {
-                /*sendNavEvent(
+                sendNavEvent(
                     NavigationEvent.Navigate(
                         Screen.WallpaperDetails(wallpaperId = action.wallpaperId)
                     )
-                )*/
-                showSnackbar(UIString.Resource(R.string.not_implemented))
+                )
             }
         }
     }
@@ -186,7 +185,6 @@ class WallpapersHomeScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            delay(200L)
             restoreState()
             loadNextPaginatorItems()
         }

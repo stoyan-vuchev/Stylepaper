@@ -9,8 +9,6 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.data.remote.response.Wallp
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpaperColor
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersCategory
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersHomeSelection
-import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.toWallpaperColor
-import kotlin.collections.distinct
 
 fun WallpapersListingResponse.toHomeEntity(
     fetched: Long,

@@ -40,8 +40,6 @@
     <string name="apply_wallpaper_home_screen">Home Screen</string>
     <string name="apply_wallpaper_lock_screen">Lock Screen</string>
     <string name="apply_wallpaper_home_and_lock_screen"><![CDATA[Home & Lock Screen]]></string>
-    <string name="on">On</string>
-    <string name="at">at</string>
     <string name="something_went_wrong">Something went wrong.</string>
     <string name="not_implemented">Not implemented.</string>
 </resources>

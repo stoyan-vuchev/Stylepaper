@@ -47,6 +47,6 @@ data class WallpaperEntity(
     val thumbs: WallpaperResponseThumbnails,
     val uploader: WallpaperResponseUploader,
     val url: String,
-    val views: Long
+    val views: Int
 
 )
