@@ -54,7 +54,10 @@ sealed class Screen(
     )
 
     @Serializable
-    data class WallpaperDetails(val wallpaperId: String) : Screen(
+    data class WallpaperDetails(
+        val wallpaperId: String,
+        val wallpaperFileType: String
+    ) : Screen(
         icon = R.drawable.wallpaper_icon,
         label = R.string.wallpaper_details_screen_label,
         description = R.string.wallpaper_details_screen_description

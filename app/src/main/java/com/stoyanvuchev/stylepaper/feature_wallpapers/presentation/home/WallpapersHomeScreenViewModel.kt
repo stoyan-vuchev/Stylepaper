@@ -69,7 +69,10 @@ class WallpapersHomeScreenViewModel @Inject constructor(
             is ViewWallpaper -> {
                 sendNavEvent(
                     NavigationEvent.Navigate(
-                        Screen.WallpaperDetails(wallpaperId = action.wallpaperId)
+                        Screen.WallpaperDetails(
+                            wallpaperId = action.wallpaperId,
+                            wallpaperFileType = action.wallpaperFileType
+                        )
                     )
                 )
             }

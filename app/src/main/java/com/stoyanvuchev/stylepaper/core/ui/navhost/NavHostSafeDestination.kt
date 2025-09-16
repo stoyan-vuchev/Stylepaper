@@ -10,9 +10,15 @@ fun NavBackStackEntry.safeScreen(): Screen? {
         Screen.Discover::class.qualifiedName -> Screen.Discover
         Screen.Search::class.qualifiedName -> Screen.Search
         Screen.Menu::class.qualifiedName -> Screen.Menu
+
         // For detail screens, we usually don’t care about args during transitions
-        Screen.WallpaperDetails::class.qualifiedName -> Screen.WallpaperDetails("placeholder")
+        Screen.WallpaperDetails::class.qualifiedName -> Screen.WallpaperDetails(
+            "placeholder",
+            "placeholder"
+        )
+
         Screen.ApplyWallpaper::class.qualifiedName -> Screen.ApplyWallpaper("placeholder")
         else -> null
+
     }
 }

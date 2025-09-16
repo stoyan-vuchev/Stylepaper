@@ -38,7 +38,7 @@ class WallpapersRepositoryTest {
         db = Room.inMemoryDatabaseBuilder(context, WallpapersLocalDatabase::class.java).build()
 
         // Initialize the WallpapersRepositorySourceHelper
-        val sourceHelper = WallpapersRepositorySourceHelper(api, db.dao)
+        val sourceHelper = WallpapersRepositorySourceHelper(context, api, db.dao)
 
         // Initialize the Repository
         repository = WallpapersRepositoryImpl(sourceHelper)
