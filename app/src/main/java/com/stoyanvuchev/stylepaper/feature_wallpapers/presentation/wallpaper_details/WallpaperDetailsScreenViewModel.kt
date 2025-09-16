@@ -12,6 +12,7 @@ import com.stoyanvuchev.stylepaper.core.ui.event.NavigationEvent
 import com.stoyanvuchev.stylepaper.core.ui.event.SnackbarEvent
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.DispatcherProvider
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.repository.WallpapersRepository
+import com.stoyanvuchev.stylepaper.feature_wallpapers.framework.manager.DownloadProgressManager
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.WallpaperDetailsScreenUIAction.Apply
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.WallpaperDetailsScreenUIAction.Back
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.WallpaperDetailsScreenUIAction.Download
@@ -20,9 +21,14 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_det
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.WallpaperDetailsScreenUIAction.ScrollToTop
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,17 +38,43 @@ import javax.inject.Inject
 class WallpaperDetailsScreenViewModel @Inject constructor(
     private val dispatchers: DispatcherProvider,
     private val repository: WallpapersRepository,
+    private val downloadManager: DownloadProgressManager,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     /** Get the ID of the Wallpaper */
 
     private var _wallpaperId = savedStateHandle.get<String>("wallpaperId") ?: ""
+    private var _wallpaperFileType = savedStateHandle.get<String>("wallpaperFileType") ?: ""
 
     /** State */
 
     private val _state = MutableStateFlow(WallpaperDetailsScreenState(wallpaperId = _wallpaperId))
     val state = _state.asStateFlow()
+
+    val downloadProgress: StateFlow<Int> =
+        downloadManager.progressMap
+            .map { it[_state.value.wallpaper.id] ?: 0 }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = 0
+            )
+
+    val isDownloaded: Flow<Boolean> =
+        downloadManager.progressMap
+            .map { currentMap ->
+                currentMap[_wallpaperId] == 100
+                        || repository.isWallpaperDownloaded(
+                    wallpaperId = _wallpaperId,
+                    fileType = _wallpaperFileType,
+                )
+            }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = false
+            )
 
     private fun restoreState() {
         updateState(
@@ -69,9 +101,9 @@ class WallpaperDetailsScreenViewModel @Inject constructor(
     fun onUIAction(action: WallpaperDetailsScreenUIAction) {
         when (action) {
             is Back -> sendNavEvent(NavigationEvent.Back)
-            is Fullscreen -> showSnackbar(UIString.Resource(R.string.not_implemented))
+            is Fullscreen -> sendActionEvent(action)
             is ScrollToTop -> sendActionEvent(action)
-            is Download -> showSnackbar(UIString.Resource(R.string.not_implemented))
+            is Download -> sendActionEvent(action)
             is Apply -> showSnackbar(UIString.Resource(R.string.not_implemented))
             is Save -> showSnackbar(UIString.Resource(R.string.not_implemented))
         }

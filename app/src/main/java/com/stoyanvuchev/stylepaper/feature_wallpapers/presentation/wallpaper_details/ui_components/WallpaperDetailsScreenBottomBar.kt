@@ -1,11 +1,13 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.ui_components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,10 +21,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +44,9 @@ import kotlinx.coroutines.delay
 fun WallpaperDetailsScreenBottomBar(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
+    isDownloaded: Boolean,
     isDividerVisible: Boolean,
+    progress: Int,
     onActionEvent: (WallpaperDetailsScreenUIAction) -> Unit
 ) {
 
@@ -64,7 +70,7 @@ fun WallpaperDetailsScreenBottomBar(
         )
     ) {
 
-        AnimatedVisibility(
+        androidx.compose.animation.AnimatedVisibility(
             visible = isDividerVisible,
             enter = fadeIn(),
             exit = fadeOut()
@@ -72,39 +78,90 @@ fun WallpaperDetailsScreenBottomBar(
             HorizontalDivider(modifier = Modifier.padding(horizontal = 14.dp))
         }
 
-        Row(
+        Box(
             modifier = Modifier
                 .navigationBarsPadding()
                 .fillMaxWidth()
                 .height(80.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            contentAlignment = Alignment.Center
         ) {
 
-            Button(
-                onClick = {
-                    if (!isClicked && !isLoading) {
-                        isClicked = true
-                        onActionEvent(WallpaperDetailsScreenUIAction.Download)
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+            androidx.compose.animation.AnimatedVisibility(
+                visible = progress == 0 || progress == 100,
+                enter = remember { fadeIn() + slideInVertically { it } },
+                exit = remember { slideOutVertically { it } + fadeOut() },
             ) {
 
-                Icon(
-                    painter = painterResource(id = R.drawable.download_icon),
-                    contentDescription = stringResource(id = R.string.download_wallpaper)
-                )
+                Button(
+                    onClick = {
+                        if (!isClicked && !isLoading) {
+                            isClicked = true
+                            onActionEvent(
+                                if (isDownloaded) WallpaperDetailsScreenUIAction.Apply
+                                else WallpaperDetailsScreenUIAction.Download
+                            )
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                ) {
 
-                Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        painter = painterResource(
+                            id = if (isDownloaded) R.drawable.wallpaper_icon
+                            else R.drawable.download_icon
+                        ),
+                        contentDescription = null
+                    )
 
-                Text(
-                    text = stringResource(id = R.string.download_wallpaper),
-                    style = MaterialTheme.typography.titleMedium
-                )
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text(
+                        text = stringResource(
+                            id = if (isDownloaded) R.string.apply_wallpaper
+                            else R.string.download_wallpaper
+                        ),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                }
+
+            }
+
+            androidx.compose.animation.AnimatedVisibility(
+                visible = progress > 0 && progress < 100,
+                enter = remember { fadeIn() },
+                exit = remember { fadeOut() },
+            ) {
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .padding(horizontal = 32.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+
+                    Text(
+                        text = "Downloading: $progress%",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    val progressFloat by remember(progress) {
+                        derivedStateOf { progress.toFloat() / 100 }
+                    }
+
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth(),
+                        progress = { progressFloat }
+                    )
+
+                }
 
             }
 

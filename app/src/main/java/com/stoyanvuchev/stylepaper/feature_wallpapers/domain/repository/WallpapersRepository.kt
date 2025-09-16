@@ -32,4 +32,9 @@ interface WallpapersRepository {
         wallpaperId: String
     ): Result<WallpaperModel>
 
+    fun isWallpaperDownloaded(
+        wallpaperId: String,
+        fileType: String
+    ): Boolean
+
 }

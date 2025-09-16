@@ -1,5 +1,6 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.mappers
 
+import com.stoyanvuchev.stylepaper.core.utils.MimeTypeUtils.toReadableMimeType
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpaperEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpapersDiscoverListingEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.entity.WallpapersHomeListingEntity
@@ -68,7 +69,7 @@ fun WallpaperResponse.toHomeEntity(fetched: Long) = WallpaperEntity(
     dimensionY = data.dimensionY,
     favorites = data.favorites,
     fileSize = data.fileSize,
-    fileType = data.fileType,
+    fileType = data.fileType.toReadableMimeType(),
     path = data.path,
     purity = data.purity,
     ratio = data.ratio,

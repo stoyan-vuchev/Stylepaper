@@ -105,7 +105,10 @@ fun WallpapersHomeScreenContainer(
                 wallpaper = wallpaper,
                 onClick = {
                     onActionEvent(
-                        WallpapersHomeScreenUIAction.ViewWallpaper(wallpaper.id)
+                        WallpapersHomeScreenUIAction.ViewWallpaper(
+                            wallpaperId = wallpaper.id,
+                            wallpaperFileType = wallpaper.fileType
+                        )
                     )
                 }
             )

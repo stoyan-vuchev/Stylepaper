@@ -1,5 +1,6 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.data.repository
 
+import android.content.Context
 import com.stoyanvuchev.stylepaper.core.etc.Result
 import com.stoyanvuchev.stylepaper.core.etc.UIString
 import com.stoyanvuchev.stylepaper.feature_wallpapers.data.local.WallpapersLocalDatabaseDao
@@ -13,6 +14,7 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersHomeSelec
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersHomeSelection.Random
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.model.WallpaperModel
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.model.WallpapersListingModel
+import com.stoyanvuchev.stylepaper.feature_wallpapers.framework.utils.isWallpaperDownloaded
 import com.stoyanvuchev.stylepaper.feature_wallpapers.mappers.toDiscoverEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.mappers.toHomeEntity
 import com.stoyanvuchev.stylepaper.feature_wallpapers.mappers.toModel
@@ -30,6 +32,7 @@ import javax.inject.Inject
  * */
 
 class WallpapersRepositorySourceHelper @Inject constructor(
+    private val context: Context,
     private val api: WallpapersRemoteAPI,
     val dao: WallpapersLocalDatabaseDao
 ) {
@@ -268,6 +271,17 @@ class WallpapersRepositorySourceHelper @Inject constructor(
 
         }
 
+    }
+
+    fun isWallpaperAlreadyDownloaded(
+        id: String,
+        fileType: String
+    ): Boolean {
+        return isWallpaperDownloaded(
+            context = context,
+            id = id,
+            fileType = fileType
+        )
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.ui_components
 
+import android.content.Intent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -22,13 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.stoyanvuchev.stylepaper.core.ext.getFileName
 import com.stoyanvuchev.stylepaper.core.ext.isScrolledToTheEnd
 import com.stoyanvuchev.stylepaper.core.ui.components.SnackbarHostAndScrollButton
 import com.stoyanvuchev.stylepaper.core.ui.event.NavigationEvent
 import com.stoyanvuchev.stylepaper.core.ui.event.SnackbarEvent
+import com.stoyanvuchev.stylepaper.feature_wallpapers.framework.service.WallpaperDownloadService
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.WallpaperDetailsScreenUIAction
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.WallpaperDetailsScreenViewModel
 import kotlinx.coroutines.delay
@@ -41,6 +45,8 @@ fun WallpaperDetailsScreen(
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val downloadProgress by viewModel.downloadProgress.collectAsStateWithLifecycle()
+    val isDownloaded by viewModel.isDownloaded.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
 
     val lazyListState = rememberLazyListState()
@@ -89,7 +95,27 @@ fun WallpaperDetailsScreen(
                     lazyListState.animateScrollToItem(0, 0)
                 }
 
-                is WallpaperDetailsScreenUIAction.Download -> Unit // todo
+                is WallpaperDetailsScreenUIAction.Download -> {
+
+                    val intent = Intent(
+                        context,
+                        WallpaperDownloadService::class.java
+                    ).apply {
+                        putExtra("url", state.wallpaper.path)
+                        putExtra("id", state.wallpaper.id)
+                        putExtra(
+                            "fileName",
+                            getFileName(
+                                id = state.wallpaper.id,
+                                type = state.wallpaper.fileType
+                            )
+                        )
+                    }
+
+                    ContextCompat.startForegroundService(context, intent)
+
+                }
+
                 is WallpaperDetailsScreenUIAction.Apply -> Unit // todo
                 else -> Unit
 
@@ -149,6 +175,8 @@ fun WallpaperDetailsScreen(
             modifier = Modifier.align(Alignment.BottomCenter),
             isDividerVisible = isDividerVisible,
             isLoading = state.isLoading,
+            isDownloaded = isDownloaded,
+            progress = downloadProgress,
             onActionEvent = viewModel::onUIAction
         )
 

@@ -9,6 +9,7 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.data.repository.Wallpapers
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.DefaultDispatchers
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.DispatcherProvider
 import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.repository.WallpapersRepository
+import com.stoyanvuchev.stylepaper.feature_wallpapers.framework.manager.DownloadProgressManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,10 +46,11 @@ object WallpapersModule {
     @Provides
     @Singleton
     fun provideWallpapersRepositorySourceHelper(
+        application: Application,
         api: WallpapersRemoteAPI,
         db: WallpapersLocalDatabase
     ): WallpapersRepositorySourceHelper {
-        return WallpapersRepositorySourceHelper(api, db.dao)
+        return WallpapersRepositorySourceHelper(application.applicationContext, api, db.dao)
     }
 
     @Provides
@@ -57,6 +59,12 @@ object WallpapersModule {
         source: WallpapersRepositorySourceHelper
     ): WallpapersRepository {
         return WallpapersRepositoryImpl(source)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDownloadProgressManager(): DownloadProgressManager {
+        return DownloadProgressManager()
     }
 
 }

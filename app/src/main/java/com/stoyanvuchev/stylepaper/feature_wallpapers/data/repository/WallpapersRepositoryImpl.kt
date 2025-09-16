@@ -162,4 +162,12 @@ class WallpapersRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun isWallpaperDownloaded(
+        wallpaperId: String,
+        fileType: String
+    ): Boolean = source.isWallpaperAlreadyDownloaded(
+        id = wallpaperId,
+        fileType = fileType
+    )
+
 }

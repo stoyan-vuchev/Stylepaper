@@ -5,9 +5,15 @@ import com.stoyanvuchev.stylepaper.feature_wallpapers.domain.WallpapersHomeSelec
 
 @Stable
 sealed interface WallpapersHomeScreenUIAction {
+
     object Search : WallpapersHomeScreenUIAction
     object ScrollToTop : WallpapersHomeScreenUIAction
     object LoadNextItems : WallpapersHomeScreenUIAction
     data class Selection(val selection: WallpapersHomeSelection) : WallpapersHomeScreenUIAction
-    data class ViewWallpaper(val wallpaperId: String) : WallpapersHomeScreenUIAction
+
+    data class ViewWallpaper(
+        val wallpaperId: String,
+        val wallpaperFileType: String
+    ) : WallpapersHomeScreenUIAction
+
 }
