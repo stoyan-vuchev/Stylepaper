@@ -33,6 +33,7 @@ import com.stoyanvuchev.stylepaper.core.ui.components.SnackbarHostAndScrollButto
 import com.stoyanvuchev.stylepaper.core.ui.event.NavigationEvent
 import com.stoyanvuchev.stylepaper.core.ui.event.SnackbarEvent
 import com.stoyanvuchev.stylepaper.feature_wallpapers.framework.service.WallpaperDownloadService
+import com.stoyanvuchev.stylepaper.feature_wallpapers.framework.utils.setWallpaperWithChooser
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.WallpaperDetailsScreenUIAction
 import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.wallpaper_details.WallpaperDetailsScreenViewModel
 import kotlinx.coroutines.delay
@@ -116,7 +117,14 @@ fun WallpaperDetailsScreen(
 
                 }
 
-                is WallpaperDetailsScreenUIAction.Apply -> Unit // todo
+                is WallpaperDetailsScreenUIAction.Apply -> {
+                    setWallpaperWithChooser(
+                        context = context,
+                        id = state.wallpaper.id,
+                        fileType = state.wallpaper.fileType
+                    )
+                }
+
                 else -> Unit
 
             }
