@@ -2,13 +2,12 @@ package com.stoyanvuchev.stylepaper.feature_wallpapers.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import com.stoyanvuchev.stylepaper.R
 import com.stoyanvuchev.stylepaper.core.ui.navhost.NavScreen
-import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.Screen.Discover
-import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.Screen.Home
-import com.stoyanvuchev.stylepaper.feature_wallpapers.presentation.Screen.Menu
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 sealed class Screen(
     @param:DrawableRes val icon: Int,
@@ -67,4 +66,8 @@ sealed class Screen(
 
 }
 
-val navDestinations: List<Screen> by lazy { listOf(Home, Discover, Menu) }
+val wallpapersNavBarDestinations = listOf(
+    Screen.Home,
+    Screen.Discover,
+    Screen.Menu
+)
